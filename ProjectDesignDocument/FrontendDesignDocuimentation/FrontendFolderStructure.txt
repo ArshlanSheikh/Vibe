@@ -1,0 +1,135 @@
+frontend/
+├── public/
+├── src/
+│   ├── main.jsx
+│   ├── App.jsx
+│   ├── index.css
+│   │
+│   ├── assets/
+│   │   ├── images/
+│   │   └── icons/
+│   │
+│   ├── components/
+│   │   ├── common/
+│   │   │   ├── Header/
+│   │   │   ├── Footer/
+│   │   │   └── Loader/
+│   │   │
+│   │   ├── auth/
+│   │   │   ├── Login/
+│   │   │   └── Signup/
+│   │   │
+│   │   ├── products/
+│   │   │   ├── ProductCard/
+│   │   │   ├── ProductList/
+│   │   │   └── ProductFilters/
+│   │   │
+│   │   ├── cart/
+│   │   │   ├── CartItem/
+│   │   │   └── CartSummary/
+│   │   │
+│   │   ├── orders/
+│   │   │   ├── OrderCard/
+│   │   │   └── OrderDetails/
+│   │   │
+│   │   └── admin/
+│   │       ├── AdminSidebar/
+│   │       └── AdminHeader/
+│   │
+│   ├── pages/
+│   │   ├── Home/
+│   │   │   ├── Home.jsx
+│   │   │   └── Home.module.css
+│   │   ├── About/
+│   │   └── Admin/
+│   │
+│   ├── hooks/
+│   ├── services/
+│   │   └── api.js
+│   │
+│   └── routes/
+│       └── AppRoutes.jsx
+│
+├── .env
+├── .gitignore
+├── index.html
+├── package.json
+├── package-lock.json
+└── vite.config.js
+
+
+
+
+
+
+1.  thies is not finall we can changer  add remove files module comoinent  folder  etc accordingg to project  need but the main thing
+    is it folow the project structure  similer  the flow will we command amoung deffrent page or ui      i provide it as refrence  
+    not real source of truth  to knnow wich  kind of software arcticutre i want in my project  according to need  add defferent files module  \
+    whate ever need  but rmomber arcticture  and flow 
+
+
+2.in app.js  all routing happen in app.js   some thing like this not same  or as it it but the arcticture  to 
+    arange code 
+
+<ScrollToTop />
+      <Routes>
+        <Route element={<Layout />}>
+          <Route path='/' element={<Home />} ></Route>
+          <Route path='/about' element={<About />}></Route>
+          <Route path='/contact' element={<ContactUs />}></Route>
+
+          {/* Cart ka apna route bhi ab hai - direct link/refresh par bhi khulega */}
+          <Route path='/cart' element={<ViewCartProduct onClose={OnClose} />} ></Route>
+
+          {/* Login aur Signup ab alag-alag routes hain, same component,
+              bas initialMode alag pass kar rahe hain */}
+          <Route path='/login' element={<SignupLogin close={OnClose} initialMode="login" />} ></Route>
+          <Route path='/signup' element={<SignupLogin close={OnClose} initialMode="signup" />} ></Route>
+
+         
+
+          <Route path='/product/:slug' element={<>
+            <ProductDetailes />
+            <GetRelatedProducts></GetRelatedProducts>
+            <CategoryNavbar></CategoryNavbar>
+            <GetTopRetedProducts></GetTopRetedProducts>
+          </>
+          } ></Route>
+          <Route path='/filtered/:category' element={<FilteredProducts />}></Route>
+          <Route path='/order' element={<MyOrder></MyOrder>} ></Route>
+        </Route>
+
+        <Route path='/admin-dashbord' element={<AdminDashboard></AdminDashboard>} ></Route>
+      </Routes>
+    </>
+
+
+
+
+3. any controller have this formate  mostly the similer structure  
+    like  first all usestate  and then all useeffect then controlle  than ui 
+    allimport are in one placed o top of file   dont focuse exact ctegorised thing to \
+    placed cod ein ther placed  so easy to know whate copde write in wich oarty of file 
+
+const PaymentDashbord = () => {
+
+    const navigate = useNavigate();
+  const location = useLocation();
+  const { isLoggedIn, user, logout } = useAuth();
+
+  const [payments, setPayments] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [refundLoading, setRefundLoading] = useState(null);
+
+    useeffect(()={},[])
+    useeffect(()={},[])
+    useeffect(()={},[])
+
+    const GetPayments = async () => {}
+    const GetPayments = async () => {}
+    const GetPayments = async () => {}
+    const GetPayments = async () => {}
+
+    return(<><>
+    )
+}

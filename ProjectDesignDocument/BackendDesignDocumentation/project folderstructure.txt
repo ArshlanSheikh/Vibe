@@ -1,0 +1,58 @@
+
+
+
+backend/
+├── app.js
+├── server.js
+├── package.json
+├── .env
+│
+├── config/
+│   ├── db.js
+│   └── cloudinary.js
+│
+└── modules/
+    ├── index.js
+    │
+    ├── auth/
+    │   ├── auth.routes.js
+    │   ├── auth.controller.js
+    │   ├── auth.model.js
+    │   └── auth.middleware.js
+    │
+    ├── users/
+    │   ├── user.routes.js
+    │   ├── user.controller.js
+    │   └── user.model.js
+    │
+    ├── products/
+    │   ├── product.routes.js
+    │   ├── product.controller.js
+    │   └── product.model.js
+    │
+    ├── categories/
+    │   ├── category.routes.js
+    │   ├── category.controller.js
+    │   └── category.model.js
+    │
+    ├── cart/
+    │   ├── cart.routes.js
+    │   ├── cart.controller.js
+    │   └── cart.model.js
+    │
+    ├── orders/
+    │   ├── order.routes.js
+    │   ├── order.controller.js
+    │   └── order.model.js
+    │
+    └── payments/
+        ├── payment.routes.js
+        ├── payment.controller.js
+        └── payment.model.js
+
+
+
+1. this is not fixed  according to project  the modules  in project will deffrent  add or removee but  structurely it is following the 
+    same arcticture  
+
+

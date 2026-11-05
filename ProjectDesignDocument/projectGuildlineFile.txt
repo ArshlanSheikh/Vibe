@@ -1,0 +1,407 @@
+# Universal AI Agent Development Guidelines
+
+## 1. Purpose
+
+This document defines the standard project architecture, folder organization, and development rules that AI agents must follow when building applications.
+
+It is reusable across different projects, including Hospital Management Systems, Online Examination Systems, Job Portals, Billing Systems, and other web applications.
+
+**Important:** The architecture and coding conventions remain consistent, but the project's modules, pages, components, database models, and business logic must be designed according to its individual requirements.
+
+## 2. General Development Principles
+
+1. Read and understand the project requirements before implementation.
+2. Inspect existing code before creating or modifying files.
+3. Follow the architecture defined in this document.
+4. Create only the modules, pages, components, and files required by the current project.
+5. Never assume that modules from a previous project are required in a new project.
+6. Keep code organized, readable, maintainable, and appropriate for a student developer.
+7. Avoid unnecessary folders, dependencies, abstractions, and duplicated code.
+8. Do not change established architecture or working functionality without a valid reason.
+9. Develop incrementally and verify functionality before declaring it complete.
+10. If a requirement is unclear and affects architecture, security, or important functionality, ask for clarification before making a risky assumption.
+
+## 3. Standard Project-Level Structure
+
+Use the following as the default outer structure for a full-stack web application.
+
+```text
+project-name/
+├── frontend/
+│   ├── public/
+│   ├── src/
+│   │   ├── main.jsx
+│   │   ├── App.jsx
+│   │   ├── index.css
+│   │   ├── assets/
+│   │   ├── components/
+│   │   ├── pages/
+│   │   ├── hooks/
+│   │   ├── services/
+│   │   └── routes/
+│   ├── .env
+│   ├── .gitignore
+│   ├── index.html
+│   ├── package.json
+│   └── vite.config.js
+│
+├── backend/
+│   ├── app.js
+│   ├── server.js
+│   ├── package.json
+│   ├── .env
+│   ├── config/
+│   └── modules/
+│       └── index.js
+│
+├── README.md
+└── .gitignore
+```
+
+This is the standard outer structure, not a requirement to create every possible subfolder or file.
+
+- Keep frontend and backend code separate.
+- Keep configuration files in their appropriate locations.
+- Add feature-specific folders inside the established structure.
+- Do not create empty folders or unnecessary placeholder files.
+- If the project does not require a backend, database, or particular integration, do not introduce one without a requirement.
+
+## 4. Frontend Architecture Rules
+
+Use React with Vite by default unless the project specifies another technology.
+
+### Pages
+
+The `pages/` directory contains the complete screens required by the application.
+
+Examples include Home, Dashboard, Admin, About, or other project-specific screens.
+
+The actual pages must be determined from the project requirements. Do not copy a fixed page list from another project.
+
+### Components
+
+The `components/` directory contains UI elements and feature-specific sections used to build pages.
+
+Organize components by feature or purpose. For example, an examination system may have question, timer, and result components, while a hospital system may have patient, appointment, and doctor components.
+
+Keep complete pages separate from their UI components. Avoid placing the entire application in one component.
+
+### Other frontend directories
+
+- `assets/`: images, icons, and other static assets.
+- `hooks/`: reusable custom React hooks when required.
+- `services/`: API communication and related service functions.
+- `routes/`: application route definitions when routing is required.
+
+Create only the directories needed by the project.
+
+Use CSS Modules for component-specific styling by default. Keep global styles in `index.css`. Use responsive, accessible designs suitable for desktop and mobile.
+
+## 5. Backend Architecture Rules
+
+Use Node.js, Express, and MongoDB with Mongoose by default for MERN projects unless the requirements specify otherwise.
+
+
+## Standard Backend Architecture
+
+### 1. Core Structure
+
+Every backend project must follow this architectural pattern:
+
+```text
+backend/
+├── app.js
+├── server.js
+├── package.json
+├── .env
+├── config/
+│   └── required configuration files
+└── modules/
+    ├── index.js
+    └── project-specific modules/
+```
+
+### 2. Core File Responsibilities
+
+- **`server.js`** — starts the backend server.
+- **`app.js`** — configures Express and mounts the central router.
+- **`package.json`** — defines dependencies and scripts.
+- **`.env`** — stores environment-specific configuration and secrets; never commit it.
+- **`config/`** — contains required configuration files, such as database or external-service connections.
+- **`modules/index.js`** — imports and registers the required feature routers.
+- **`modules/`** — contains the individual feature modules needed by the application.
+
+### 3. Module Architecture
+
+Each feature module must follow the same organizational pattern where applicable:
+
+```text
+modules/
+├── index.js
+└── feature-name/
+    ├── feature.routes.js
+    ├── feature.controller.js
+    ├── feature.model.js
+    └── feature.middleware.js   # only if required
+```
+
+Use consistent naming throughout the project.
+
+- `routes` define API endpoints.
+- `controller` handles request processing, validation, business logic, database operations, response formation, and error handling.
+- `model` defines the database schema and data-related rules when a database model is needed.
+- `middleware` contains feature-specific middleware only when required.
+
+A module does not have to contain every listed file if a particular file is unnecessary for that feature.
+
+### 4. Dynamic Module Selection
+
+The number, names, and responsibilities of modules must be determined by the current project's requirements.
+
+For example:
+
+- A Hospital Management System may need patients, doctors, appointments, and prescriptions.
+- An Online Examination System may need exams, questions, submissions, and results.
+- A Job Portal may need jobs, employers, applications, and candidate profiles.
+- A Billing System may need customers, invoices, products, and payments.
+
+These examples are illustrative only. The agent must not create modules simply because they appear in an example or an earlier project.
+
+### 5. Central Routing Convention
+
+All feature routes must be registered through the central router.
+
+In `app.js`:
+
+```javascript
+app.use("/api/v1", moduleRoutes);
+```
+
+In `modules/index.js`:
+
+```javascript
+router.use("/auth", authRoutes);
+router.use("/patients", patientRoutes);
+router.use("/appointments", appointmentRoutes);
+```
+
+The above module registrations are examples. The actual registrations must match the modules implemented in the current project.
+
+The request flow must remain:
+
+`app.js → modules/index.js → feature routes → required middleware → dedicated controller → model/database when needed`
+
+### 6. Architectural Rules
+
+1. Preserve the core backend architecture across projects.
+2. Add or remove feature modules according to the project requirements.
+3. Do not change the responsibilities of the core files without a valid reason.
+4. Keep module-specific files inside their respective modules.
+5. Do not create unnecessary global `utils/` or `middleware/` folders by default.
+6. Do not create empty modules, unused files, or placeholder implementations.
+7. Keep routing, controller, model, and middleware responsibilities clear.
+8. Follow the project's established API response, validation, error-handling, and security conventions.
+9. Inspect the requirements before designing the module list.
+10. Before implementation, show the proposed backend tree and explain any important architectural decisions.
+
+**Mandatory principle:** The backend architecture remains consistent; the feature modules and their contents are dynamic. The agent must adapt the structure to each project's functionality rather than forcing every project into the same module list.
+
+
+
+### Standard request flow
+
+```text
+app.js
+   ↓
+modules/index.js
+   ↓
+Feature Routes
+   ↓
+Required Middleware
+   ↓
+Dedicated Controller
+   ↓
+Model / Database
+   ↓
+Standard API Response
+```
+
+### Main backend files
+
+- `server.js`: starts the application server.
+- `app.js`: configures Express and mounts the main router.
+- `config/`: database connections and required external service configurations.
+- `modules/index.js`: imports and registers the feature routers.
+- `modules/`: contains the application's actual feature modules.
+
+Use the following mounting convention:
+
+```javascript
+app.use("/api/v1", moduleRoutes);
+```
+
+The central router registers only the modules required by the current project.
+
+For example:
+
+```javascript
+router.use("/auth", authRoutes);
+router.use("/patients", patientRoutes);
+router.use("/appointments", appointmentRoutes);
+```
+
+These are examples for a possible hospital system, not mandatory routes for every application.
+
+### Module organization
+
+Each required feature module should contain its related routes, controllers, models, and any additional files it genuinely needs.
+
+Do not enforce a fixed module list across projects. Add, remove, or rename modules according to the requirements while retaining the same architectural principles.
+
+Do not create a global `utils/` or `middleware/` directory by default. Keep middleware inside the module that needs it unless genuine reuse justifies a shared location.
+
+## 6. API Response Convention
+
+All JSON API responses must follow this standard structure:
+
+```javascript
+{
+    success: true,
+    message: "",
+    data: null,
+    error: null
+}
+```
+
+Rules:
+
+- `success`: Boolean indicating whether the request succeeded.
+- `message`: Human-readable result or error message.
+- `data`: Contains all successful response payloads, including objects, arrays, counts, and pagination details.
+- `error`: Contains error details on failure and is `null` on success.
+
+Example successful response:
+
+```javascript
+return res.status(200).json({
+    success: true,
+    message: "Records fetched successfully",
+    data: {
+        records: [],
+        total: 0
+    },
+    error: null
+});
+```
+
+Example validation failure:
+
+```javascript
+return res.status(400).json({
+    success: false,
+    message: "Required fields are missing",
+    data: null,
+    error: ["name", "email"]
+});
+```
+
+Use suitable HTTP status codes. Do not return `success: true` when an operation fails.
+
+## 7. Controller and Validation Conventions
+
+Every API operation must have its own dedicated controller function.
+
+For example, create, update, delete, get-one, and get-all operations should have separate controllers when those operations are required.
+
+Each controller is responsible for:
+
+1. Extracting request data.
+2. Validating the input.
+3. Executing the relevant business logic.
+4. Performing required database operations.
+5. Preparing the response data.
+6. Returning the standard API response.
+7. Handling errors.
+
+Follow a consistent validation pattern across controllers while adapting the rules to each operation.
+
+Validate required fields, data types, nested objects, arrays, allowed values, and other applicable constraints. Return validation failures before making database changes.
+
+Keep validation inside the controller by default, consistent with the project's conventions. Do not force identical validation fields or rules onto unrelated modules.
+
+## 8. Security and Environment Configuration
+
+- Store secrets and environment-specific settings in environment variables.
+- Never commit real credentials or `.env` files.
+- Validate all untrusted input on the backend.
+- Protect private endpoints using appropriate authentication and authorization.
+- Enforce role and resource permissions on the server.
+- Do not expose sensitive information in API errors.
+- Do not rely solely on frontend validation or hidden UI elements for security.
+
+Implement authentication, file uploads, payment integrations, email services, and other security-sensitive functionality only when required by the project.
+
+## 9. Code Quality Rules
+
+- Use clear, consistent file and variable names.
+- Keep functions focused and avoid unnecessary duplication.
+- Do not create a separate file for every trivial piece of code.
+- Keep related files together according to the defined architecture.
+- Do not invent API endpoints, fields, or database relationships.
+- Do not leave placeholder logic in completed features.
+- Avoid unrelated rewrites and unnecessary dependency changes.
+- Update `.env.example` when new environment variables are introduced.
+- Keep `.gitignore` appropriate for the selected technology stack.
+
+## 10. Testing and Verification
+
+Before declaring a feature complete:
+
+1. Check the relevant frontend and backend functionality.
+2. Test API success and failure cases.
+3. Verify required-field validation.
+4. Verify authorization where applicable.
+5. Run available lint and build commands.
+6. Check responsive layouts when the project has a UI.
+7. Report any tests that were not run and any known limitations.
+
+Never claim that a test or build passed unless it was actually executed.
+
+## 11. Mandatory AI Agent Workflow
+
+For every new project, the AI agent must:
+
+1. Read this guideline and the project-specific requirements.
+2. Inspect the existing repository, if one exists.
+3. Identify the required pages, components, modules, models, and API endpoints.
+4. Propose a project-specific structure using the standard architecture.
+5. Explain important assumptions and clarify significant ambiguities.
+6. Implement the application incrementally.
+7. Test the implemented functionality.
+8. Review the changes against this guideline.
+9. Report completed work, files changed, test results, setup requirements, and remaining tasks.
+
+## 12. Final Rule
+
+This document standardizes **how applications are structured and developed**, not what every application must contain.
+
+The outer project architecture, API conventions, controller patterns, validation principles, and quality standards should remain consistent.
+
+The features, modules, pages, UI components, database models, and business logic must always be specific to the current project's requirements.
+
+If project-specific requirements conflict with these defaults, identify the conflict and resolve it explicitly rather than silently breaking either requirement.
+
+
+ 
+
+
+
+
+
+
+
+jhdbfkjhgld
+skfnlksdnf
+sfbjkd
+sdfsdf
+sdfsdfsdfsd

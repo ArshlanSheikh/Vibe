@@ -1,0 +1,22 @@
+
+app.use("/api/v1", moduleRoutes);
+
+
+
+router.use("/auth", authRoutes);
+router.use("/products", productRoutes);
+router.use("/categories", categoryRoutes);
+router.use("/cart", cartRoutes);
+router.use("/orders", orderRoutes);
+router.use("/payments", paymentRoutes);
+
+
+
+
+
+PaymentRoutes.get('/test',TestRazorpay)
+PaymentRoutes.post('/create-order',Authontication,Authorization(['buyer',"admin"]),CreateRazorpayOrder)
+PaymentRoutes.post('/verify',Authontication,Authorization(['buyer',"admin"]),VerifyRazorpayPayment)
+
+PaymentRoutes.post('/refund/:paymentId',Authontication,Authorization(["admin"]),CreateRefund)
+PaymentRoutes.get('/admin/all',Authontication,Authorization(["admin"]),GetAllPayments)

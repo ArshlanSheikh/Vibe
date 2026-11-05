@@ -1,0 +1,98 @@
+
+
+1. every request have this same formate of success  message  data  every type of info data  are send inside data  and 
+    any type of error  error message error obj send in error field
+
+
+2. every route have its own controller for example in product regestration   for regester  edit remiove get product get all product 
+     all have ther own seprate controller  with it logic  every thing  controller validation data formation  etc is inside controller 
+
+
+
+return res.status().json({success:true,message:"",data:null, error:null})
+
+return res.status().json({success:true,message:"",data:{products:[],totale:12,etc according to need}, error:null})
+
+
+
+const ControllerName = async(req,res){
+    try{
+        console.log('Hit ControllerName api...')
+        res.status().json({success:true,message:"",data:null, error:null})
+    }
+    catch(error){
+        console.log('failed to handel ControllerName')
+        res.status().json({success:true,message:"",data:null, error:null})
+    }
+}
+
+
+
+
+
+3. valadation  formate should we similer   not exact similer  every time but some 
+    thing similer  and and follow a formate in every controller  if possible  
+
+const commingData = req.body
+
+        const requiredFields = [
+            "productName",
+            "shortDescription",
+            "description",
+            "category",
+            "subCategory",
+            "price",
+            "salePrice",
+            "weight",
+            "dimensions",
+            "coverImage",
+            "variants",
+        ];
+        const requiredVariantFields = [
+            "color",
+            "size",
+            "stock"
+        ];
+
+        const missingFields = requiredFields.filter((item)=>{
+            return (
+                commingData[item] === null ||
+                commingData[item] === undefined ||
+                commingData[item] === ""
+            )
+        })
+        // console.log('1')
+
+        if(missingFields.length > 0){
+            return res.status(400).json({success:false,message:"required fields are missing",data:null,error:missingFields})
+        }
+        // console.log('2')
+
+        if(commingData.variants){
+            const variantsError = []
+            let missingVarientFields
+
+            commingData.variants.forEach((varent,index)=>{
+                 missingVarientFields= requiredVariantFields.filter((item)=>{
+                    return (
+                        varent[item] === null ||
+                        varent[item] === undefined ||
+                        varent[item] === ""
+                    )
+                })
+                if(missingVarientFields.length > 0){
+                    variantsError.push({varentIndex:index,missingFields:missingVarientFields})
+                }
+            })
+
+            if (variantsError.length > 0) {
+                return res.status(400).json({success: false,message: "Variant fields are missing",data:null,error: variantsError});
+            }
+        }
+
+
+
+export {ControllerName}
+
+
+
