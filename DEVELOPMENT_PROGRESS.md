@@ -11,7 +11,7 @@
 
 ---
 
-## Stage 1: Core Anonymous Social Networking (In Progress)
+## Stage 1: Core Anonymous Social Networking (COMPLETED)
 
 ### Commit Breakdown & Status
 - [x] **Commit 1: Base Architecture & Foundation**
@@ -53,13 +53,13 @@
   - Full frontend UI: `CreatePostModal` (7 tabs + Poll builder), `PostCard` (stance voting bar, complete sentence prompt), `PollCard` (animated percentage bars), `CommentSection` (nested replies), `PostView`, `Search`
   - 11/11 tests passing in automated integration suite (`test_features.js`)
 
-- [ ] **Commit 5: Admin Module & Dashboard**
-  - Admin authentication & RBAC middleware
-  - Real-time platform metrics (users, posts, polls, pending reviews, rejections)
-  - AI Moderation queue interface (approve, reject, override)
+- [x] **Commit 5: Admin Module & Dashboard**
+  - Admin authentication & RBAC middleware (`verifyAdminRole`)
+  - Real-time platform metrics: total users, active accounts, total posts, polls, votes, pending safety reviews, rejected violations
+  - AI Moderation queue interface (approve, reject, override AI decisions)
   - User account management (suspend, reactivate, disable, moderation history)
-  - Admin audit logs (`AdminAuditLog`) with timestamps & admin attribution
-  - Complete Stage 1 end-to-end integration tests
+  - Immutable admin audit logs (`AdminAuditLog`) with timestamps & admin attribution
+  - Complete Stage 1 end-to-end integration tests passing (`test_admin.js`)
 
 ---
 

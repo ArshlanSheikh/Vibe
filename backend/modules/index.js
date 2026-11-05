@@ -7,6 +7,7 @@ import commentRoutes from "./comments/comment.routes.js";
 import pollRoutes from "./polls/poll.routes.js";
 import feedRoutes from "./feed/feed.routes.js";
 import searchRoutes from "./search/search.routes.js";
+import adminRoutes from "./admin/admin.routes.js";
 
 const router = express.Router();
 
@@ -34,5 +35,6 @@ router.use("/comments", commentRoutes);
 router.use("/polls", pollRoutes);
 router.use("/feed", feedRoutes);
 router.use("/search", searchRoutes);
+router.use("/admin", adminRoutes);
 
 export default router;

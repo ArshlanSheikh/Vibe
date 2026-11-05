@@ -4,6 +4,8 @@ import Home from "../pages/Home/Home";
 import ProfileSettings from "../pages/ProfileSettings/ProfileSettings";
 import PostView from "../pages/PostView/PostView";
 import Search from "../pages/Search/Search";
+import AdminDashboard from "../pages/Admin/AdminDashboard";
+import AdminRoute from "./AdminRoute";
 import { useAuth } from "../hooks/useAuth";
 
 const AppRoutes = ({ onOpenAuthModal, onOpenCreateModal }) => {
@@ -38,6 +40,14 @@ const AppRoutes = ({ onOpenAuthModal, onOpenCreateModal }) => {
           ) : (
             <Navigate to="/" replace />
           )
+        }
+      />
+      <Route
+        path="/admin/*"
+        element={
+          <AdminRoute>
+            <AdminDashboard />
+          </AdminRoute>
         }
       />
       <Route
