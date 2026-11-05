@@ -35,13 +35,14 @@
   - Mask & Account Settings page (`/settings`) with username re-roll & preset selector
   - Verified with automated 8-step integration test suite (`test_auth.js`)
 
-- [ ] **Commit 3: AI Content Moderation Engine**
+- [x] **Commit 3: AI Content Moderation Engine**
   - Dedicated moderation module (`backend/modules/moderation/`)
   - Google Gemini API integration with structured JSON schema
   - Deterministic safety rules (PII, phone/email, hate speech, threats, spam)
   - Tri-state decisions: `APPROVED`, `REJECTED`, `REVIEW`
   - Safe failure strategy (never publish unmoderated content on timeout/failure)
-  - Moderation audit log model (`ModerationLog`)
+  - Moderation audit log model (`ModerationLog`) with compound indexing
+  - Tested with 100% pass rate in `test_moderation.js` (PII, violence, spam, safe controversy)
 
 - [ ] **Commit 4: Core Anonymous Social Network Features**
   - 7 Post types: text, image, question, opinion, discussion, hot_take, complete_sentence

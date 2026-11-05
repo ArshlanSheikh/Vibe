@@ -1,6 +1,7 @@
 import express from "express";
 import authRoutes from "./auth/auth.routes.js";
 import userRoutes from "./users/user.routes.js";
+import moderationRoutes from "./moderation/moderation.routes.js";
 
 const router = express.Router();
 
@@ -22,5 +23,6 @@ router.get("/health", (req, res) => {
 // Feature Module Routes
 router.use("/auth", authRoutes);
 router.use("/users", userRoutes);
+router.use("/moderation", moderationRoutes);
 
 export default router;
