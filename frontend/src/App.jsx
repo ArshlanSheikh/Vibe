@@ -5,6 +5,7 @@ import { AuthProvider } from "./hooks/useAuth";
 import Navbar from "./components/common/Navbar/Navbar";
 import Sidebar from "./components/common/Sidebar/Sidebar";
 import AppRoutes from "./routes/AppRoutes";
+import AuthModal from "./components/auth/AuthModal/AuthModal";
 
 function App() {
   const [authModalMode, setAuthModalMode] = useState(null); // 'login' | 'register' | null
@@ -45,6 +46,12 @@ function App() {
                 />
               </main>
             </div>
+
+            <AuthModal
+              isOpen={Boolean(authModalMode)}
+              initialMode={authModalMode || "login"}
+              onClose={handleCloseAuth}
+            />
           </div>
         </ToastProvider>
       </AuthProvider>

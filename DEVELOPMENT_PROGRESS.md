@@ -25,13 +25,15 @@
   - Toast notification system, responsive Navbar, Sidebar, and Home feed shell
   - Build and health check verification
 
-- [ ] **Commit 2: Authentication, Anonymous Profiles & Identity**
+- [x] **Commit 2: Authentication, Anonymous Profiles & Identity**
   - User registration & login with bcrypt password hashing
   - JWT access token (15m) + refresh token (7d) rotation stored in MongoDB
   - Cryptographic anonymous username generation algorithm (e.g. `ShadowFalcon82`)
   - User profile customization (avatar presets, bio, interest tags)
   - Strict privacy separation: internal user IDs / emails NEVER exposed publicly
-  - Frontend Login & Registration modals, profile editing view
+  - Frontend Login & Registration modal with topic picker
+  - Mask & Account Settings page (`/settings`) with username re-roll & preset selector
+  - Verified with automated 8-step integration test suite (`test_auth.js`)
 
 - [ ] **Commit 3: AI Content Moderation Engine**
   - Dedicated moderation module (`backend/modules/moderation/`)
