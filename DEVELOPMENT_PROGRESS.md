@@ -44,12 +44,14 @@
   - Moderation audit log model (`ModerationLog`) with compound indexing
   - Tested with 100% pass rate in `test_moderation.js` (PII, violence, spam, safe controversy)
 
-- [ ] **Commit 4: Core Anonymous Social Network Features**
+- [x] **Commit 4: Core Anonymous Social Network Features**
   - 7 Post types: text, image, question, opinion, discussion, hot_take, complete_sentence
   - Interactive Polling System: single/multi vote, Agree/Disagree, This or That, duplicate vote prevention, expiration
   - Nested Comments & Replies with helpful marking and upvoting
   - Algorithmic Feeds: For You, Latest, Trending, Questions, Polls, Hot Takes, Ending Soon
-  - Search & Discovery (posts, polls, hashtags, trending topics)
+  - Universal Search & Discovery (posts, polls, hashtags, trending topics)
+  - Full frontend UI: `CreatePostModal` (7 tabs + Poll builder), `PostCard` (stance voting bar, complete sentence prompt), `PollCard` (animated percentage bars), `CommentSection` (nested replies), `PostView`, `Search`
+  - 11/11 tests passing in automated integration suite (`test_features.js`)
 
 - [ ] **Commit 5: Admin Module & Dashboard**
   - Admin authentication & RBAC middleware

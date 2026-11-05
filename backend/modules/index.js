@@ -2,6 +2,11 @@ import express from "express";
 import authRoutes from "./auth/auth.routes.js";
 import userRoutes from "./users/user.routes.js";
 import moderationRoutes from "./moderation/moderation.routes.js";
+import postRoutes from "./posts/post.routes.js";
+import commentRoutes from "./comments/comment.routes.js";
+import pollRoutes from "./polls/poll.routes.js";
+import feedRoutes from "./feed/feed.routes.js";
+import searchRoutes from "./search/search.routes.js";
 
 const router = express.Router();
 
@@ -24,5 +29,10 @@ router.get("/health", (req, res) => {
 router.use("/auth", authRoutes);
 router.use("/users", userRoutes);
 router.use("/moderation", moderationRoutes);
+router.use("/posts", postRoutes);
+router.use("/comments", commentRoutes);
+router.use("/polls", pollRoutes);
+router.use("/feed", feedRoutes);
+router.use("/search", searchRoutes);
 
 export default router;

@@ -25,6 +25,35 @@
   margin-bottom: 0.75rem;
 }
 
+.refreshBtn {
+  color: var(--text-muted);
+  padding: 0.4rem;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+}
+
+.refreshBtn:hover {
+  color: var(--text-primary);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.spinning {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.feedList {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
 .spotlightBadge {
   display: inline-flex;
   align-items: center;

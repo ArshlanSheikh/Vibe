@@ -1,51 +1,67 @@
 import React, { useState, useEffect } from "react";
-import { useLocation, useSearchParams } from "react-router-dom";
-import { Sparkles, MessageSquare, BarChart3, Flame, HelpCircle, AlertCircle } from "lucide-react";
+import { useSearchParams } from "react-router-dom";
+import {
+  Sparkles,
+  MessageSquare,
+  BarChart3,
+  Flame,
+  HelpCircle,
+  Hourglass,
+  Clock,
+  RefreshCw
+} from "lucide-react";
 import { useAuth } from "../../hooks/useAuth";
 import api from "../../services/api";
+import PostCard from "../../components/posts/PostCard/PostCard";
+import PollCard from "../../components/polls/PollCard/PollCard";
 import styles from "./Home.module.css";
 
 const tabs = [
   { id: "for-you", label: "For You", icon: Sparkles },
-  { id: "latest", label: "Latest", icon: MessageSquare },
+  { id: "latest", label: "Latest", icon: Clock },
   { id: "trending", label: "Trending", icon: Flame },
   { id: "questions", label: "Questions", icon: HelpCircle },
   { id: "polls", label: "Polls", icon: BarChart3 },
-  { id: "hot-takes", label: "Hot Takes", icon: Flame }
+  { id: "hot-takes", label: "Hot Takes", icon: Flame },
+  { id: "ending-soon", label: "Ending Soon", icon: Hourglass }
 ];
 
 const Home = ({ onOpenAuthModal, onOpenCreateModal }) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const currentTab = searchParams.get("tab") || "for-you";
-  const { isLoggedIn, user } = useAuth();
+  const { isLoggedIn } = useAuth();
 
   const [dailyQuestion, setDailyQuestion] = useState(null);
-  const [loading, setLoading] = useState(false);
   const [feedItems, setFeedItems] = useState([]);
-  const [apiError, setApiError] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [isRefreshing, setIsRefreshing] = useState(false);
+
+  const fetchFeed = async () => {
+    try {
+      setLoading(true);
+      const res = await api.get(`/feed?tab=${currentTab}`);
+      if (res?.success && res?.data) {
+        setFeedItems(res.data.items || []);
+        if (res.data.dailyQuestion) {
+          setDailyQuestion(res.data.dailyQuestion);
+        }
+      }
+    } catch (err) {
+      console.warn("Feed fetch error:", err);
+    } finally {
+      setLoading(false);
+      setIsRefreshing(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchFeed = async () => {
-      setLoading(true);
-      setApiError(null);
-      try {
-        const response = await api.get(`/feed?tab=${currentTab}`);
-        if (response?.success && response?.data) {
-          setFeedItems(response.data.items || []);
-          if (response.data.dailyQuestion) {
-            setDailyQuestion(response.data.dailyQuestion);
-          }
-        }
-      } catch (err) {
-        // Feed endpoint may not be active yet until commit 4
-        setApiError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchFeed();
   }, [currentTab]);
+
+  const handleRefresh = () => {
+    setIsRefreshing(true);
+    fetchFeed();
+  };
 
   return (
     <div className={styles.homeContainer}>
@@ -56,13 +72,25 @@ const Home = ({ onOpenAuthModal, onOpenCreateModal }) => {
             <Sparkles size={14} />
             <span>Today's Anonymous Question</span>
           </div>
+          <button
+            onClick={handleRefresh}
+            className={styles.refreshBtn}
+            title="Refresh feed"
+          >
+            <RefreshCw size={15} className={isRefreshing ? styles.spinning : ""} />
+          </button>
         </div>
+
         <h2 className={styles.questionText}>
-          {dailyQuestion?.content || "What is a controversial opinion you hold that you would never admit in public?"}
+          {dailyQuestion?.content ||
+            "What is a controversial opinion you hold that you would never admit in public?"}
         </h2>
+
         <div className={styles.spotlightActions}>
           <button
-            onClick={() => (isLoggedIn ? onOpenCreateModal("question") : onOpenAuthModal("login"))}
+            onClick={() =>
+              isLoggedIn ? onOpenCreateModal("question") : onOpenAuthModal("login")
+            }
             className={styles.answerBtn}
           >
             Answer Anonymously
@@ -81,7 +109,7 @@ const Home = ({ onOpenAuthModal, onOpenCreateModal }) => {
               onClick={() => setSearchParams({ tab: tab.id })}
               className={`${styles.tabBtn} ${isActive ? styles.activeTab : ""}`}
             >
-              <Icon size={16} />
+              <Icon size={15} />
               <span>{tab.label}</span>
             </button>
           );
@@ -98,12 +126,21 @@ const Home = ({ onOpenAuthModal, onOpenCreateModal }) => {
           </div>
         ) : feedItems.length > 0 ? (
           <div className={styles.feedList}>
-            {/* Feed items populated in Commit 4 */}
-            {feedItems.map((item) => (
-              <div key={item._id} className={styles.feedCard}>
-                <p>{item.content}</p>
-              </div>
-            ))}
+            {feedItems.map((item) =>
+              item.feedType === "poll" || item.options ? (
+                <PollCard
+                  key={item._id}
+                  poll={item}
+                  onAuthRequired={onOpenAuthModal}
+                />
+              ) : (
+                <PostCard
+                  key={item._id}
+                  post={item}
+                  onAuthRequired={onOpenAuthModal}
+                />
+              )
+            )}
           </div>
         ) : (
           <div className={styles.emptyState}>
@@ -115,7 +152,9 @@ const Home = ({ onOpenAuthModal, onOpenCreateModal }) => {
               Be the first voice to break the silence. Share a hot take, confession, or poll without revealing your real identity.
             </p>
             <button
-              onClick={() => (isLoggedIn ? onOpenCreateModal() : onOpenAuthModal("register"))}
+              onClick={() =>
+                isLoggedIn ? onOpenCreateModal() : onOpenAuthModal("register")
+              }
               className={styles.firstPostBtn}
             >
               <Sparkles size={16} />
